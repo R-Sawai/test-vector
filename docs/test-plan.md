@@ -247,34 +247,37 @@ backend/
 
 ## 6. 実装順序
 
-### Phase 1: 環境構築（優先度: 高）
+### Phase 1: 環境構築（優先度: 高） ✅ 完了
 
 1. [x] vitest, supertest インストール
 2. [x] vitest.config.ts 作成
 3. [x] package.json スクリプト追加
 4. [x] tests/setup.ts 作成
 
-### Phase 2: モック実装（優先度: 高）
+### Phase 2: モック実装（優先度: 高） ✅ 完了
 
 5. [x] embedding.ts にモックモード追加
 6. [x] tests/helpers/testApp.ts 作成（supertest 用）
+7. [x] tests/helpers/testDb.ts 作成（DB接続ヘルパー）
 
-### Phase 3: ユニットテスト（優先度: 中）
+### Phase 3: ユニットテスト（優先度: 中） ✅ 完了
 
-7. [x] tests/unit/schemas/document.test.ts
-8. [x] tests/unit/middleware/validate.test.ts
+8. [x] tests/unit/schemas/document.test.ts (33件)
+9. [x] tests/unit/middleware/validate.test.ts (9件)
+10. [x] tests/unit/services/embedding.test.ts (8件)
+11. [x] tests/unit/services/vector.test.ts (7件)
 
-### Phase 4: 統合テスト（優先度: 中）
+### Phase 4: 統合テスト（優先度: 中） ✅ 完了
 
-9. [ ] docker-compose.test.yml 作成
-10. [ ] tests/integration/health.test.ts
-11. [ ] tests/integration/documents.test.ts
-12. [ ] tests/integration/search.test.ts
+12. [x] docker-compose.test.yml 作成
+13. [x] tests/integration/health.test.ts (2件)
+14. [x] tests/integration/documents.test.ts (13件)
+15. [x] tests/integration/search.test.ts (11件)
 
 ### Phase 5: CI/CD（優先度: 低）
 
-13. [ ] GitHub Actions ワークフロー作成
-14. [ ] カバレッジレポート設定
+16. [ ] GitHub Actions ワークフロー作成
+17. [ ] カバレッジレポート設定
 
 ---
 
