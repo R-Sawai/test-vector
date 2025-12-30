@@ -30,6 +30,9 @@ npm run test:watch
 
 # カバレッジ付き
 npm run test:coverage
+
+# UI レポート表示
+npm run test:ui
 ```
 
 ### テスト用 DB の停止
