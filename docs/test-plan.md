@@ -249,20 +249,20 @@ backend/
 
 ### Phase 1: 環境構築（優先度: 高）
 
-1. [ ] vitest, supertest インストール
-2. [ ] vitest.config.ts 作成
-3. [ ] package.json スクリプト追加
-4. [ ] tests/setup.ts 作成
+1. [x] vitest, supertest インストール
+2. [x] vitest.config.ts 作成
+3. [x] package.json スクリプト追加
+4. [x] tests/setup.ts 作成
 
 ### Phase 2: モック実装（優先度: 高）
 
-5. [ ] embedding.ts にモックモード追加
-6. [ ] tests/helpers/testApp.ts 作成（supertest 用）
+5. [x] embedding.ts にモックモード追加
+6. [x] tests/helpers/testApp.ts 作成（supertest 用）
 
 ### Phase 3: ユニットテスト（優先度: 中）
 
-7. [ ] tests/unit/schemas/document.test.ts
-8. [ ] tests/unit/middleware/validate.test.ts
+7. [x] tests/unit/schemas/document.test.ts
+8. [x] tests/unit/middleware/validate.test.ts
 
 ### Phase 4: 統合テスト（優先度: 中）
 
