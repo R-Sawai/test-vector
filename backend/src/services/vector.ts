@@ -18,7 +18,7 @@ import type {
  * @param vector - 数値の配列（埋め込みベクトル）
  * @returns pgvectorが受け付ける形式の文字列 例: "[0.1,0.2,...]"
  */
-function toPgVectorLiteral(vector: number[]): string {
+export function toPgVectorLiteral(vector: number[]): string {
   return `[${vector.join(",")}]`;
 }
 

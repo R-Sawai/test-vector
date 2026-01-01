@@ -4,3 +4,7 @@ dist/
 *.log
 .vscode/
 .idea/
+
+# Test artifacts
+coverage/
+test-results/

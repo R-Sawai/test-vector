@@ -33,7 +33,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
-    include: ["src/**/*.test.ts", "tests/**/*.test.ts"],
+    include: ["tests/**/*.test.ts"],
     coverage: {
       provider: "v8",
       reporter: ["text", "html"],
@@ -144,7 +144,7 @@ function simpleHash(str: string): number {
 
 ### 4.1 ユニットテスト
 
-#### Zod スキーマ (`schemas/document.test.ts`)
+#### Zod スキーマ (`tests/unit/schemas/document.test.ts`)
 
 | テストケース                                | 期待結果                             |
 | ------------------------------------------- | ------------------------------------ |
@@ -168,14 +168,14 @@ function simpleHash(str: string): number {
 
 ### 4.2 統合テスト（API エンドポイント）
 
-#### `GET /health` (`routes/health.test.ts`)
+#### `GET /health` (`tests/integration/health.test.ts`)
 
 | テストケース | 期待結果                      |
 | ------------ | ----------------------------- |
 | DB 接続正常  | 200, `{ status: "ok" }`       |
 | DB 接続失敗  | 503, `{ status: "db_error" }` |
 
-#### `POST /api/documents` (`routes/documents.test.ts`)
+#### `POST /api/documents` (`tests/integration/documents.test.ts`)
 
 | テストケース       | 期待結果                  |
 | ------------------ | ------------------------- |
@@ -185,14 +185,14 @@ function simpleHash(str: string): number {
 | content 10001 文字 | 400, バリデーションエラー |
 | metadata 付き      | 201, metadata 含めて保存  |
 
-#### `GET /api/documents` (`routes/documents.test.ts`)
+#### `GET /api/documents` (`tests/integration/documents.test.ts`)
 
 | テストケース       | 期待結果          |
 | ------------------ | ----------------- |
 | ドキュメント 0 件  | 200, 空配列       |
 | ドキュメント複数件 | 200, 作成日時降順 |
 
-#### `DELETE /api/documents/:id` (`routes/documents.test.ts`)
+#### `DELETE /api/documents/:id` (`tests/integration/documents.test.ts`)
 
 | テストケース  | 期待結果                  |
 | ------------- | ------------------------- |
@@ -200,7 +200,7 @@ function simpleHash(str: string): number {
 | 存在しない ID | 404, エラー               |
 | 非数値 ID     | 400, バリデーションエラー |
 
-#### `POST /api/search` (`routes/search.test.ts`)
+#### `POST /api/search` (`tests/integration/search.test.ts`)
 
 | テストケース     | 期待結果                  |
 | ---------------- | ------------------------- |
@@ -218,17 +218,23 @@ backend/
 ├── src/
 │   ├── schemas/
 │   │   ├── document.ts
-│   │   └── document.test.ts      # ユニットテスト（コロケーション）
 │   ├── middleware/
-│   │   ├── validate.ts
-│   │   └── validate.test.ts
+│   │   └── validate.ts
 │   └── services/
 │       ├── embedding.ts
-│       └── embedding.test.ts
+│       └── vector.ts
 ├── tests/
 │   ├── setup.ts                   # テストセットアップ
 │   ├── helpers/
 │   │   └── testApp.ts             # supertest用Expressアプリ
+│   ├── unit/
+│   │   ├── middleware/
+│   │   │   └── validate.test.ts
+│   │   ├── schemas/
+│   │   │   └── document.test.ts
+│   │   └── services/
+│   │       ├── embedding.test.ts
+│   │       └── vector.test.ts
 │   └── integration/
 │       ├── health.test.ts
 │       ├── documents.test.ts
@@ -241,34 +247,37 @@ backend/
 
 ## 6. 実装順序
 
-### Phase 1: 環境構築（優先度: 高）
+### Phase 1: 環境構築（優先度: 高） ✅ 完了
 
-1. [ ] vitest, supertest インストール
-2. [ ] vitest.config.ts 作成
-3. [ ] package.json スクリプト追加
-4. [ ] tests/setup.ts 作成
+1. [x] vitest, supertest インストール
+2. [x] vitest.config.ts 作成
+3. [x] package.json スクリプト追加
+4. [x] tests/setup.ts 作成
 
-### Phase 2: モック実装（優先度: 高）
+### Phase 2: モック実装（優先度: 高） ✅ 完了
 
-5. [ ] embedding.ts にモックモード追加
-6. [ ] tests/helpers/testApp.ts 作成（supertest 用）
+5. [x] embedding.ts にモックモード追加
+6. [x] tests/helpers/testApp.ts 作成（supertest 用）
+7. [x] tests/helpers/testDb.ts 作成（DB接続ヘルパー）
 
-### Phase 3: ユニットテスト（優先度: 中）
+### Phase 3: ユニットテスト（優先度: 中） ✅ 完了
 
-7. [ ] schemas/document.test.ts
-8. [ ] middleware/validate.test.ts
+8. [x] tests/unit/schemas/document.test.ts (33件)
+9. [x] tests/unit/middleware/validate.test.ts (9件)
+10. [x] tests/unit/services/embedding.test.ts (8件)
+11. [x] tests/unit/services/vector.test.ts (7件)
 
-### Phase 4: 統合テスト（優先度: 中）
+### Phase 4: 統合テスト（優先度: 中） ✅ 完了
 
-9. [ ] docker-compose.test.yml 作成
-10. [ ] tests/integration/health.test.ts
-11. [ ] tests/integration/documents.test.ts
-12. [ ] tests/integration/search.test.ts
+12. [x] docker-compose.test.yml 作成
+13. [x] tests/integration/health.test.ts (2件)
+14. [x] tests/integration/documents.test.ts (13件)
+15. [x] tests/integration/search.test.ts (11件)
 
 ### Phase 5: CI/CD（優先度: 低）
 
-13. [ ] GitHub Actions ワークフロー作成
-14. [ ] カバレッジレポート設定
+16. [ ] GitHub Actions ワークフロー作成
+17. [ ] カバレッジレポート設定
 
 ---
 
@@ -350,7 +359,7 @@ npm run test:watch
 npm run test:coverage
 
 # 特定ファイルのみ
-npm test -- schemas/document.test.ts
+npm test -- tests/unit/schemas/document.test.ts
 ```
 
 ### 期待されるカバレッジ目標

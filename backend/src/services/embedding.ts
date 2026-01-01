@@ -41,6 +41,11 @@ function getOpenAIClient(): OpenAI {
  * console.log(embedding.length); // 1536
  */
 export async function createEmbedding(text: string): Promise<number[]> {
+  // テスト環境ではモックを使用（OpenAI API呼び出しをスキップ）
+  if (process.env.USE_MOCK_EMBEDDING === "true") {
+    return createMockEmbedding(text);
+  }
+
   const openai = getOpenAIClient();
 
   const response = await openai.embeddings.create({
@@ -61,4 +66,43 @@ export async function createEmbedding(text: string): Promise<number[]> {
   }
 
   return embedding;
+}
+
+/**
+ * テスト用のダミー埋め込みベクトルを生成します
+ *
+ * @description
+ * テキストのハッシュから決定的なベクトルを生成します。
+ * 同じテキストからは常に同じベクトルが生成されます。
+ *
+ * @param text - ベクトル化するテキスト
+ * @returns 1536次元の正規化されたベクトル
+ */
+function createMockEmbedding(text: string): number[] {
+  const hash = simpleHash(text);
+  const vector: number[] = [];
+
+  for (let i = 0; i < EMBEDDING_DIMENSION; i++) {
+    // 決定的な疑似乱数（sin関数で分散）
+    vector.push(Math.sin(hash + i) * 0.5);
+  }
+
+  // L2正規化（単位ベクトル化）
+  const norm = Math.sqrt(vector.reduce((sum, v) => sum + v * v, 0));
+  return vector.map((v) => v / norm);
+}
+
+/**
+ * 文字列から簡易ハッシュ値を計算します
+ *
+ * @param str - ハッシュ化する文字列
+ * @returns 32bit整数のハッシュ値
+ */
+function simpleHash(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0; // 32bit整数に変換
+  }
+  return hash;
 }
